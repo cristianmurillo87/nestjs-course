@@ -4,6 +4,7 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskRepository } from './task.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
+import { TaskStatus } from './task-status.enum';
 
 @Injectable()
 export class TasksService {
@@ -39,7 +40,7 @@ export class TasksService {
 
     /**
      * Find a task by id
-     * Respository operations are asynchronous; therefore the key 'async'
+     * Repository operations are asynchronous; therefore the key 'async'
      * is used in the function's declaration.
      * and await is used to stop the execution of the function until the findOne operation
      * has finished
@@ -52,6 +53,15 @@ export class TasksService {
             throw new NotFoundException(`Task with id ${id} not found.`);
         }
         return found;
+    }
+
+    /**
+     * Creates a new task
+     * @param  {CreateTaskDto} createTaskDto 
+     * @returns {Promise<Task>}
+     */
+    async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto);
     }
     // gestTaskById(id: string): Task {
     //     return this.findTask(id);
