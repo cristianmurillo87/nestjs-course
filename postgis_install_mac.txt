@@ -1,0 +1,8 @@
+Download and install Postgres.app
+
+Configure $PATH by running
+sudo mkdir -p /etc/paths.d && echo /Applications/Postgres.app/Contents/Versions/latest/bin | sudo tee /etc/paths.d/postgresapp
+
+Enable Postgis by running
+psql -d DATABASE_NAME -f /Applications/Postgres.app/Contents/Versions/latest/share/postgresql/contrib/postgis-3.0/postgis.sql
+psql -d DATABASE_NAME -f /Applications/Postgres.app/Contents/Versions/latest/share/postgresql/contrib/postgis-3.0/spatial_ref_sys.sql
