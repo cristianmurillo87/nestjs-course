@@ -21,6 +21,10 @@ export class TasksController {
     //         return this.tasksService.getAllTasks();
     //     }
     // }
+    @Get()
+    getTasks(@Query(ValidationPipe) filterDto: GetTasksFilterDto) {
+        return this.tasksService.getTasks(filterDto);
+    }
 
     @Get('/:id')
     getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
@@ -46,8 +50,4 @@ export class TasksController {
         return this.tasksService.updateTaskStatus(id, status);
     }
 
-    // @Delete('/:id')
-    // deleteTask(@Param('id') id: string) {
-    //     return this.tasksService.deleteTask(id);
-    // }
 }
