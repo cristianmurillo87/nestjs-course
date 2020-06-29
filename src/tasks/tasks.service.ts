@@ -44,8 +44,8 @@ export class TasksService {
      * is used in the function's declaration.
      * and await is used to stop the execution of the function until the findOne operation
      * has finished
-     * @param  {number} id 
-     * @returns {Promise<Task>}
+     * @param  {number} id The id of the task
+     * @returns {Promise<Task>} The retrieved task
      */
     async getTaskById(id: number): Promise<Task> {
         const found = await this.taskRepository.findOne(id);
@@ -58,41 +58,30 @@ export class TasksService {
     /**
      * Creates a new task
      * @param  {CreateTaskDto} createTaskDto 
-     * @returns {Promise<Task>}
+     * @returns {Promise<Task>} The created task
      */
     async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
         return this.taskRepository.createTask(createTaskDto);
     }
-    // gestTaskById(id: string): Task {
-    //     return this.findTask(id);
-    // }
 
-    // createTask(createTaskDto: CreateTaskDto) {
-    //     const {title, description} = createTaskDto;
-        
-    //     const task: Task = {
-    //         id: uuidv1(),
-    //         title, 
-    //         description,
-    //         status: TaskStatus.OPEN
-    //     }
+    /**
+     * Deletes a task
+     * @param  {number} id The id of the task
+     */
+    async deleteTask(id: number): Promise<void> {
+        const deletedTask = await this.taskRepository.delete(id);
+        if (deletedTask.affected === 0) {
+            throw new NotFoundException(`Task with id ${id} not found.`);
+        }
+    }
 
-    //     this.tasks.push(task);
-    //     // return the created task as a good practice when creating a new resource
-    //     return task;
-    // }
+    async updateTaskStatus(id: number, status: TaskStatus) {
+        const task = await this.getTaskById(id);
+        task.status = status;
+        await task.save();
+        return task;
+    }
 
-    // deleteTask(id: string): Task {
-    //     const task: Task = this.findTask(id);
-    //     this.tasks = this.tasks.filter(task => task.id !== id);
-    //     return task; 
-    // }
-
-    // updateTask(id: string, status: TaskStatus): Task {
-    //     const task = this.findTask(id);
-    //     task.status = status;
-    //     return task;
-    // }
 
     // private findTask(id: string): Task {
     //     const found = this.tasks.find(task => task.id === id);
